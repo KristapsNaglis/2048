@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <ctime>
 #include <cstdlib>
 
@@ -41,13 +42,13 @@ void newGame(){
 }
 
 void printUI(){
-    system("cls");
+    // system("cls");
     for (auto &i : board) {
         for (int j : i) {
             if (j == 0) {
-                cout << ".      ";
+                cout << setw(4) << ".";
             } else {
-                cout << j << "      ";
+                cout << setw(4) << j;
             }
         }
         cout << endl;
@@ -77,19 +78,23 @@ void applyMove(int direction){
     }
 
     int movePossible = 0;
-    for (int i = startRow; i>= 0 && i < 4; i += stepRow) {
-        for (int j = startColumn; j >= 0 && j < 4; j += stepColumn) {
-            int nextI = i + directionRow[direction];
-            int nextJ = j + directionColumn[direction];
+    int canGenerateNewNumber = 0;
+    do {
+        movePossible = 0;
+        for (int i = startRow; i>= 0 && i < 4; i += stepRow) {
+            for (int j = startColumn; j >= 0 && j < 4; j += stepColumn) {
+                int nextI = i + directionRow[direction];
+                int nextJ = j + directionColumn[direction];
 
-            if (canMakeMove(i, j, nextI, nextJ)) {
-                board[nextI][nextJ] += board[i][j];
-                board[i][j] = 0;
-                movePossible = 1;
+                if (board[i][j] && canMakeMove(i, j, nextI, nextJ)) {
+                    board[nextI][nextJ] += board[i][j];
+                    board[i][j] = 0;
+                    movePossible = canGenerateNewNumber = 1;
+                }
             }
         }
-    }
-    if (movePossible) {
+    } while (movePossible);
+    if (canGenerateNewNumber) {
         generateNewNumber();
     }
 }

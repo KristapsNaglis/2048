@@ -9,6 +9,8 @@
 C:/Users/Kristaps/CLionProjects/C++PD/KursaDarbs/main.cpp
 iostream
 -
+iomanip
+-
 ctime
 -
 cstdlib
